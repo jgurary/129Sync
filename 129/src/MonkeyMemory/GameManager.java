@@ -2,6 +2,7 @@ package MonkeyMemory;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 
 public class GameManager {
 
@@ -44,17 +45,40 @@ public class GameManager {
 	}
 
 	/**
-	 * Places all the cards in random, but unique, positions on a given display
-	 * panel
+	 * Places all the cards to fit inside the given display
 	 */
-	public void shuffleCardPositions(Display d) {
-		int x = 0, y = 0;
+	public void placeCardsOnDisplay(Display d) {
+		double x = Card.PADDING, y = Card.PADDING;
 		for (int i = 0; i < cards.length; i++) {
 			cards[i].placeCard(x, y);
 			x += Card.CARD_SIZE + Card.PADDING;
 			if (x + Card.CARD_SIZE > d.getWidth()) {
 				y += Card.CARD_SIZE + Card.PADDING;
-				x = 0;
+				x = Card.PADDING;
+			}
+		}
+	}
+
+	/**
+	 * Shuffle the deck so that all cards are at random indexes
+	 */
+	public void shuffleCards() {
+		int shuffles = cards.length * 2;
+		for (int i = 0; i < shuffles; i++) {
+			// Swap two cards randomly
+			int first = (int) (Math.random() * cards.length);
+			int second = (int) (Math.random() * cards.length);
+			Card hold = cards[first];
+			cards[first] = cards[second];
+			cards[second] = hold;
+		}
+	}
+
+	public void handleClick(Point p) {
+		for (int i = 0; i < cards.length; i++) {
+			if (cards[i].contains(p)) {
+				/// do something....
+				System.out.println(i);
 			}
 		}
 	}

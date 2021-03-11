@@ -34,13 +34,14 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 		this.setFocusTraversalKeysEnabled(false);
 
 		manager.startNewGame();
-		manager.shuffleCardPositions(this); // TODO there will be a bug here!
+		manager.shuffleCards();
 	}
 
 	protected void paintComponent(Graphics graphicHelper) {
 		super.paintComponent(graphicHelper);
 		Graphics2D g = (Graphics2D) graphicHelper;
 
+		manager.placeCardsOnDisplay(this);
 		manager.draw(g);
 
 	}
@@ -59,7 +60,7 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		System.out.println("Click");
+		manager.handleClick(e.getPoint());
 	}
 
 	@Override
