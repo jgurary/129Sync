@@ -43,4 +43,8 @@ public class Card {
 		}
 	}
 
+	public Color getColor() {
+		return color;
+	}
+
 }

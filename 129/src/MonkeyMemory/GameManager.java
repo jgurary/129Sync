@@ -7,6 +7,7 @@ import java.awt.Point;
 public class GameManager {
 
 	public Card[] cards;
+	Card first, second;
 
 	public GameManager(int numCards) {
 		if (numCards < 2) { // handles negative, 0, or 1 cards
@@ -75,10 +76,28 @@ public class GameManager {
 	}
 
 	public void handleClick(Point p) {
+		// TODO find a way to display the second card on a delay...
 		for (int i = 0; i < cards.length; i++) {
 			if (cards[i].contains(p)) {
-				/// do something....
-				System.out.println(i);
+				// TODO BUG you can click cards that have already been revealed
+				if (first == null && !cards[i].isFlipped) {
+					first = cards[i];
+					cards[i].isFlipped = true;
+				} else if (!cards[i].isFlipped) {
+					second = cards[i];
+					cards[i].isFlipped = true;
+					// if the two colors are equal
+					if (first.getColor().equals(second.getColor())) {
+						// the cards stayed flipped
+					} else {
+						// the cards are both hidden again
+						first.isFlipped = false;
+						second.isFlipped = false;
+					}
+
+					first = null;
+					second = null;
+				}
 			}
 		}
 	}

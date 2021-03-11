@@ -13,7 +13,7 @@ import javax.swing.event.MouseInputListener;
 
 public class Display extends JPanel implements MouseInputListener, KeyListener {
 
-	GameManager manager = new GameManager(40);
+	GameManager manager = new GameManager(8);
 
 	/**
 	 * Construct a panel with specified width, height, and background color
@@ -61,6 +61,7 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		manager.handleClick(e.getPoint());
+		repaint();
 	}
 
 	@Override
