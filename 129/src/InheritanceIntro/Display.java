@@ -13,8 +13,10 @@ import javax.swing.event.MouseInputListener;
 
 public class Display extends JPanel implements MouseInputListener, KeyListener {
 
-	SeaCreature crabby = new Crab(100, 100, Color.blue);
-	SeaCreature whaley = new Whale(200, 400, 200);
+//	SeaCreature crabby = new Crab(100, 100, Color.blue);
+//	SeaCreature whaley = new Whale(200, 400, 200);
+
+	SeaCreature[] creatures = new SeaCreature[10];
 
 	/**
 	 * Construct a panel with specified width, height, and background color
@@ -33,13 +35,26 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 		this.addKeyListener(this);
 		this.setFocusable(true);
 		this.setFocusTraversalKeysEnabled(false);
+
+		for (int i = 0; i < creatures.length; i++) {
+			// make a crab or whale with a 50/50 chance
+			if (Math.random() > .5) {
+				creatures[i] = new Whale(Math.random() * width, Math.random() * height, 200);
+			} else {
+				creatures[i] = new Crab(Math.random() * width, Math.random() * height, Color.blue);
+			}
+		}
 	}
 
 	protected void paintComponent(Graphics graphicHelper) {
 		super.paintComponent(graphicHelper);
 		Graphics2D g = (Graphics2D) graphicHelper;
-		crabby.draw(g);
-		whaley.draw(g);
+//		crabby.draw(g);
+//		whaley.draw(g);
+
+		for (int i = 0; i < creatures.length; i++) {
+			creatures[i].draw(g);
+		}
 	}
 
 	@Override
