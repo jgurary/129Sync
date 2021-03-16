@@ -79,7 +79,6 @@ public class GameManager {
 		// TODO find a way to display the second card on a delay...
 		for (int i = 0; i < cards.length; i++) {
 			if (cards[i].contains(p)) {
-				// TODO BUG you can click cards that have already been revealed
 				if (first == null && !cards[i].isFlipped) {
 					first = cards[i];
 					cards[i].isFlipped = true;
