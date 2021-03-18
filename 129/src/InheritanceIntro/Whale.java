@@ -11,6 +11,9 @@ public class Whale extends SeaCreature {
 	public static final Color baseColor = Color.white;
 	public static final Color eyeColor = Color.blue;
 	double fatness;
+	public static final double MOVEMENT_PER_SWIM = .2;
+
+	public Display displayPanel;
 
 	Ellipse2D.Double base;
 	Rectangle2D.Double tail;
@@ -23,11 +26,13 @@ public class Whale extends SeaCreature {
 	 * @param x
 	 * @param y
 	 * @param fatness
+	 * @param d
 	 */
-	public Whale(double x, double y, double fatness) {
+	public Whale(double x, double y, double fatness, Display d) {
 		super(x, y);
 		this.fatness = fatness;
 		placeWhale(x, y);
+		displayPanel = d;
 	}
 
 	/**
@@ -37,6 +42,8 @@ public class Whale extends SeaCreature {
 	 * @param y
 	 */
 	public void placeWhale(double x, double y) {
+		this.x = x;
+		this.y = y;
 		base = new Ellipse2D.Double(x, y, fatness * FATNESS_TO_LENGTH_RATIO, fatness);
 		tail = new Rectangle2D.Double(x + fatness * FATNESS_TO_LENGTH_RATIO, y + fatness / 2 - fatness / 6, fatness / 3,
 				fatness / 3);
@@ -61,8 +68,12 @@ public class Whale extends SeaCreature {
 
 	@Override
 	public void swim() {
-		// TODO Auto-generated method stub
+		double x = this.x - MOVEMENT_PER_SWIM;
+		if (tail.x + tail.width < 0) {
+			x = displayPanel.getWidth();
+		}
 
+		placeWhale(x, y);
 	}
 
 }

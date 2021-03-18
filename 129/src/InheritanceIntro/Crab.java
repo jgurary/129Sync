@@ -12,6 +12,7 @@ public class Crab extends SeaCreature {
 
 	public static final double BASE_SIZE = 50;
 	public static final double PINCHER_SIZE = 15;
+	public static final double MOVEMENT_PER_SWIM = 1;
 
 	private Color color;
 
@@ -40,6 +41,8 @@ public class Crab extends SeaCreature {
 	 * @param y
 	 */
 	public void placeCrab(double x, double y) {
+		this.x = x;
+		this.y = y;
 		base = new Rectangle2D.Double(x, y, BASE_SIZE, BASE_SIZE);
 		leftPincher = new Rectangle2D.Double(x - PINCHER_SIZE, y - PINCHER_SIZE, PINCHER_SIZE, PINCHER_SIZE);
 		rightPincher = new Rectangle2D.Double(x + BASE_SIZE, y - PINCHER_SIZE, PINCHER_SIZE, PINCHER_SIZE);
@@ -60,10 +63,14 @@ public class Crab extends SeaCreature {
 		g.draw(rightPincher);
 	}
 
+	/**
+	 * Wiggles the crab around. Crabs only wiggle left and right because they can't
+	 * actually swim
+	 */
 	@Override
 	public void swim() {
-		// TODO Auto-generated method stub
-
+		double move = Math.random() * MOVEMENT_PER_SWIM * 2 - MOVEMENT_PER_SWIM;
+		placeCrab(this.x + move, this.y);
 	}
 
 }

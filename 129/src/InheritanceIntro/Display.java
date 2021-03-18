@@ -38,10 +38,13 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 
 		for (int i = 0; i < creatures.length; i++) {
 			// make a crab or whale with a 50/50 chance
-			if (Math.random() > .5) {
-				creatures[i] = new Whale(Math.random() * width, Math.random() * height, 200);
-			} else {
+			double rand = Math.random();
+			if (rand < .33) {
+				creatures[i] = new Whale(Math.random() * width, Math.random() * height, 200, this);
+			} else if (rand > .33 && rand < .66) {
 				creatures[i] = new Crab(Math.random() * width, Math.random() * height, Color.blue);
+			} else {
+				creatures[i] = new Shark(Math.random() * width, Math.random() * height, this);
 			}
 		}
 	}
@@ -53,8 +56,11 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 //		whaley.draw(g);
 
 		for (int i = 0; i < creatures.length; i++) {
+			creatures[i].swim();
 			creatures[i].draw(g);
 		}
+
+		repaint();
 	}
 
 	@Override

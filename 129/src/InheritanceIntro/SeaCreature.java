@@ -4,8 +4,10 @@ import java.awt.Graphics2D;
 
 public abstract class SeaCreature {
 
-	protected double x;
-	protected double y;
+	/**
+	 * Position of the Sea Creature
+	 */
+	protected double x, y;
 
 	/**
 	 * Creates a new sea creature at the given position
