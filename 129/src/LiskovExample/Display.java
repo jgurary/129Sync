@@ -41,8 +41,19 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 	protected void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
 		Graphics2D g = (Graphics2D) graphics;
+
 		for (int i = 0; i < shapes.length; i++) {
-			g.setColor(Color.blue);
+			/*
+			 * Avoid doing this unless you are absolutely sure that the object in question
+			 * is a Rect. Casing a parent as a child object like this is a dangerous move
+			 * you should avoid whenever possible.
+			 * 
+			 * Generally, when Eclipse suggests you to do this, don't. Rewrite some part of
+			 * your code to avoid having to do this
+			 */
+			Rect r = (Rect) shapes[i];
+			Color c = r.color;
+			g.setColor(c);
 			g.fill(shapes[i]);
 		}
 
@@ -55,7 +66,19 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-
+		for (int i = 0; i < shapes.length; i++) {
+			if (shapes[i].contains(e.getPoint())) {
+				// Liskov substitution violation!!!
+				/*
+				 * Squares can't change width! They would no longer be squares. This means a
+				 * child of Rect, doesn't support all the features that Rect does!
+				 * 
+				 * Every child object should support all of the features of its parent!
+				 */
+				shapes[i].width += 5;
+			}
+		}
+		repaint();
 	}
 
 	@Override

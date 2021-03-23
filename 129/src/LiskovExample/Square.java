@@ -9,4 +9,9 @@ public class Square extends Rect {
 		super.color = Color.green;
 	}
 
+	public void grow(double toGrow) {
+		super.width += toGrow;
+		super.height += toGrow;
+	}
+
 }
