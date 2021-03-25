@@ -21,6 +21,7 @@ public class Store {
 	 * @return
 	 */
 	public Sandwich makeRandomSandwich() {
+
 		// TODO rewrite this in the inheritance version!
 		/*
 		 * Picks a random index between 0 and the number of items that the Bread enum
