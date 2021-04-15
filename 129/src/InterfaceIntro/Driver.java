@@ -25,10 +25,21 @@ public class Driver {
 		otherCar.place(300, 300);
 		car.setColor(Color.blue);
 		otherCar.setColor(Color.green);
+		ElectricCar eCar = new ElectricCar();
+		eCar.place(100, 300);
+		eCar.setColor(Color.pink);
+		ElectricCar eCarOther = new ElectricCar();
+		eCarOther.place(300, 300);
+		eCarOther.setColor(Color.orange);
+
 		panel.addDrawable(car);
 		panel.addDrawable(otherCar);
+		panel.addDrawable(eCar);
+		panel.addDrawable(eCarOther);
 		panel.getInputHandler().addMoveable(car);
 		panel.getInputHandler().addMoveable(otherCar);
+		panel.getInputHandler().addMoveable(eCar);
+		panel.getInputHandler().addMoveable(eCarOther);
 	}
 
 }

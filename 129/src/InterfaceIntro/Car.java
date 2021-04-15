@@ -2,6 +2,7 @@ package InterfaceIntro;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
 public class Car implements Ignition, Engine, Moveable, Drawable {
@@ -51,6 +52,7 @@ public class Car implements Ignition, Engine, Moveable, Drawable {
 
 	@Override
 	public double getX() {
+		System.out.println(this.toString() + " I AM THE CAR VERSION");
 		return display.x;
 	}
 
@@ -92,6 +94,11 @@ public class Car implements Ignition, Engine, Moveable, Drawable {
 	@Override
 	public void setColor(Color c) {
 		color = c;
+	}
+
+	@Override
+	public Shape getShape() {
+		return display;
 	}
 
 }
