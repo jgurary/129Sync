@@ -25,10 +25,10 @@ public class Driver {
 		otherCar.place(300, 300);
 		car.setColor(Color.blue);
 		otherCar.setColor(Color.green);
-		panel.drawable[0] = car;
-		panel.drawable[1] = otherCar;
-		panel.moveable[0] = car;
-		panel.moveable[1] = otherCar;
+		panel.addDrawable(car);
+		panel.addDrawable(otherCar);
+		panel.getInputHandler().addMoveable(car);
+		panel.getInputHandler().addMoveable(otherCar);
 	}
 
 }

@@ -4,14 +4,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
-import javax.swing.event.MouseInputListener;
 
-public class Display extends JPanel implements MouseInputListener, KeyListener {
+public class Display extends JPanel {
 
 	/*
 	 * valid syntax! creates an object (a car) but stores a reference only to its
@@ -19,8 +15,9 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 	 */
 	/// Drawable drawable = new Car();
 
-	public Drawable[] drawable = new Drawable[10];
-	public Moveable[] moveable = new Moveable[10];
+	private Drawable[] drawable = new Drawable[10];
+	private int nextDrawable = 0;
+	private DisplayInput inputListener;
 
 	/**
 	 * Construct a panel with specified width, height, and background color
@@ -33,12 +30,17 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 		setPreferredSize(new Dimension(width, height));
 		setBackground(bgColor);
 
-		this.addMouseListener(this);
-		this.addMouseMotionListener(this);
+		inputListener = new DisplayInput(this);
+		inputListener.registerPanel(this);
+	}
 
-		this.addKeyListener(this);
-		this.setFocusable(true);
-		this.setFocusTraversalKeysEnabled(false);
+	public DisplayInput getInputHandler() {
+		return inputListener;
+	}
+
+	public void addDrawable(Drawable d) {
+		drawable[nextDrawable] = d;
+		nextDrawable++;
 	}
 
 	protected void paintComponent(Graphics graphicHelper) {
@@ -50,65 +52,6 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 				d.draw(g);
 			}
 		}
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		System.out.println("Click");
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-	}
-
-	@Override
-	public void keyPressed(KeyEvent k) {
-		if (k.getKeyCode() == KeyEvent.VK_A) {
-			for (Moveable m : moveable) {
-				if (m != null) {
-					m.move(-5, 0);
-					;
-				}
-			}
-		}
-
-		if (k.getKeyCode() == KeyEvent.VK_D) {
-			for (Moveable m : moveable) {
-				if (m != null) {
-					m.move(5, 0);
-					;
-				}
-			}
-		}
-		repaint();
-	}
-
-	@Override
-	public void keyReleased(KeyEvent k) {
-	}
-
-	@Override
-	public void keyTyped(KeyEvent k) {
 	}
 
 }
