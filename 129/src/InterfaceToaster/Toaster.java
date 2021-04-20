@@ -2,16 +2,48 @@ package InterfaceToaster;
 
 public class Toaster implements Slot {
 
+	Toastable[] toastables;
+
+	public Toaster(int numSlots) {
+		this.toastables = new Toastable[numSlots];
+	}
+
+	/**
+	 * Attempts to insert this Toastable item into an available slot. If none exist,
+	 * does nothing
+	 */
 	@Override
 	public void insertToastable(Toastable t) {
-		// TODO Auto-generated method stub
-
+		for (int i = 0; i < toastables.length; i++) {
+			if (toastables[i] == null) {
+				toastables[i] = t;
+				return;
+			}
+		}
 	}
 
 	@Override
 	public void toast() {
-		// TODO Auto-generated method stub
+		for (Toastable t : toastables) {
+			if (t != null) {
+				t.toast();
+			}
+		}
+	}
 
+	public void printContents() {
+		for (Toastable t : toastables) {
+			if (t != null) {
+				System.out.println(t);
+			}
+		}
+	}
+
+	@Override
+	public Toastable remove(int slotNum) {
+		Toastable t = toastables[slotNum];
+		toastables[slotNum] = null;
+		return t;
 	}
 
 }
