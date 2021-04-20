@@ -28,6 +28,15 @@ public class Toaster implements Slot {
 			if (t != null) {
 				t.toast();
 			}
+
+			/*
+			 * Works the same as the above in this case!
+			 */
+//			try {
+//				t.toast();
+//			}catch(Exception e) {
+//				
+//			}
 		}
 	}
 
