@@ -35,6 +35,7 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 	protected void paintComponent(Graphics graphicHelper) {
 		super.paintComponent(graphicHelper);
 		Graphics2D g = (Graphics2D) graphicHelper;
+
 	}
 
 	@Override
