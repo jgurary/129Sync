@@ -1,9 +1,9 @@
 package ArrayListIntro;
 
-public class Driver {
+public class DriverArrayList {
 
 	public static void main(String[] args) {
-		RecordManager manager = new RecordManager(5);
+		RecordManagerArrayList manager = new RecordManagerArrayList();
 		manager.insertRecord(new Record("A", 50));
 		manager.insertRecord(new Record("B", 50));
 		manager.insertRecord(new Record("C", 50));
@@ -16,11 +16,7 @@ public class Driver {
 		manager.insertRecord(new Record("H", 50));
 		manager.printArray();
 
-		System.out.println(manager.getSumOfSalaries());
-
 		manager.removeRecord("A");
-
-		System.out.println(manager.getSumOfSalaries());
 
 		manager.removeRecord("C");
 
@@ -30,11 +26,6 @@ public class Driver {
 		manager.insertRecord(new Record("J", 50));
 
 		manager.printArray();
-
-		manager.insertRecord(new Record("D", 50));
-		manager.removeAllRecords("D");
-
-		System.out.println(manager.getSumOfSalaries());
 
 	}
 
