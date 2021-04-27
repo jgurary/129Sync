@@ -10,14 +10,6 @@ public class RecordManager {
 	}
 
 	public void insertRecord(Record r) {
-//		for (int i = 0; i < records.length; i++) {
-//			if (records[i] == null) {
-//				records[i] = r;
-//				System.out.println("Inserted record " + r.name + " at " + i);
-//				return;
-//			}
-//		}
-
 		// if the array has room, insert the item in the next spot
 		if (nextItem < records.length) {
 			records[nextItem] = r;
@@ -38,6 +30,7 @@ public class RecordManager {
 			 * nextItem
 			 */
 			records[size] = r;
+			nextItem++;
 			System.out.println("Inserted record " + r.name + " at " + size);
 		}
 
@@ -51,16 +44,15 @@ public class RecordManager {
 	 * @return
 	 */
 	public int size() {
-		for (int i = records.length - 1; i >= 0; i--) {
-			if (records[i] != null) {
-				return i;
-			}
-		}
-		return records.length;
+		return nextItem;
+	}
+
+	public Record get(int i) {
+		return records[i];
 	}
 
 	public void printArray() {
-		for (int i = 0; i < records.length; i++) {
+		for (int i = 0; i < size(); i++) {
 			if (records[i] != null) {
 				System.out.println("[" + i + "]: " + records[i].name);
 			} else {
@@ -80,7 +72,16 @@ public class RecordManager {
 		for (int i = 0; i < records.length; i++) {
 			try {
 				if (records[i].name.equals(name)) {
-					records[i] = null;
+					// scoot all the records after this item up to fill the gap
+					for (int k = i; k < nextItem; k++) {
+						records[k] = records[k + 1];
+					}
+					nextItem--;
+					// TODO if it's preferable, set the old last spot to null
+					/*
+					 * Note that in this approach, the last item is now duplicated: but the
+					 * duplicate sits beyond nextItem, so we can't really access it
+					 */
 					return;
 				}
 			} catch (Exception e) {
@@ -98,7 +99,11 @@ public class RecordManager {
 		for (int i = 0; i < records.length; i++) {
 			try {
 				if (records[i].name.equals(name)) {
-					records[i] = null;
+					// scoot all the records after this item up to fill the gap
+					for (int k = i; k < nextItem; k++) {
+						records[k] = records[k + 1];
+					}
+					nextItem--;
 				}
 			} catch (Exception e) {
 

@@ -3,6 +3,7 @@ package ArrayListIntro;
 public class DriverArrayList {
 
 	public static void main(String[] args) {
+		System.out.println("ArrayList version");
 		RecordManagerArrayList manager = new RecordManagerArrayList();
 		manager.insertRecord(new Record("A", 50));
 		manager.insertRecord(new Record("B", 50));
@@ -16,9 +17,12 @@ public class DriverArrayList {
 		manager.insertRecord(new Record("H", 50));
 		manager.printArray();
 
-		manager.removeRecord("A");
-
-		manager.removeRecord("C");
+//		manager.removeRecord("A");
+//		manager.removeRecord("C");
+//		manager.removeRecordAlt("A");
+//		manager.removeRecordAlt("C");
+		manager.removeAllRecordsAlt("A");
+		manager.removeAllRecordsAlt("C");
 
 		manager.printArray();
 

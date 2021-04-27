@@ -3,6 +3,7 @@ package ArrayListIntro;
 public class Driver {
 
 	public static void main(String[] args) {
+		System.out.println("Our version");
 		RecordManager manager = new RecordManager(5);
 		manager.insertRecord(new Record("A", 50));
 		manager.insertRecord(new Record("B", 50));
