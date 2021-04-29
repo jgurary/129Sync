@@ -26,6 +26,7 @@ public class RecordManagerArrayList {
 		System.out.println();
 	}
 
+	// Be careful with this, you may run into exceptions
 	/**
 	 * Removes the first record from the start with a matching name
 	 * 
@@ -44,6 +45,7 @@ public class RecordManagerArrayList {
 		}
 	}
 
+	// Be careful with this, you may run into exceptions
 	public void removeRecordAlt(String name) {
 		for (Record r : records) {
 			try {
@@ -57,6 +59,7 @@ public class RecordManagerArrayList {
 		}
 	}
 
+	// Don't do this, you'll get an exception.
 	public void removeAllRecordsAlt(String name) {
 		for (Record r : records) {
 			try {
@@ -69,6 +72,11 @@ public class RecordManagerArrayList {
 		}
 	}
 
+	/*
+	 * If you need to remove something from an arraylist while looping through it,
+	 * do it this way! This is the safe way to avoid
+	 * ConcurrentModificationExceptions!
+	 */
 	public void removeRecordBest(String name) {
 		Iterator<Record> itr = records.iterator();
 		while (itr.hasNext()) {
