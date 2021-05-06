@@ -1,5 +1,6 @@
 package RhythmGame;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
@@ -18,6 +19,8 @@ public class Note implements Drawable {
 	private boolean isDoneAnimation = false;
 	private int animationFrames = 0;
 
+	public NoteKeeper keeper;
+
 	/**
 	 * Creates a new note at the given location (generally the top of the screen),
 	 * with the given {@link #dropSpeed}
@@ -25,15 +28,18 @@ public class Note implements Drawable {
 	 * @param x
 	 * @param y
 	 * @param dropSpeed
+	 * @param keeper
 	 */
-	public Note(double x, double y, double dropSpeed) {
+	public Note(double x, double y, double dropSpeed, NoteKeeper keeper) {
 		display = new Rectangle2D.Double(x, y, Settings.NOTE_SIZE, Settings.NOTE_SIZE);
 		color = new Color((int) (Math.random() * 0xFFFFFF));
 		this.dropSpeed = dropSpeed;
+		this.keeper = keeper;
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
+		g.setStroke(new BasicStroke(3));
 		g.setColor(color);
 		g.fill(display);
 		g.setColor(Color.white);
@@ -100,6 +106,7 @@ public class Note implements Drawable {
 			isDoneAnimation = true;
 			display.width = 0;
 			display.height = 0;
+			keeper.removeNote(this);
 		}
 	}
 

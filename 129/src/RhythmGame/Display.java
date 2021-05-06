@@ -18,6 +18,7 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 	private ArrayList<Drawable> drawables = new ArrayList<Drawable>();
 	GameManager manager;
 	long frameStart = System.currentTimeMillis();
+	int frames = 0;
 
 	/**
 	 * Construct a panel with specified width, height, and background color
@@ -42,17 +43,24 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 		super.paintComponent(graphicHelper);
 		Graphics2D g = (Graphics2D) graphicHelper;
 		// Start of the frame
+		frames++;
 
 		if (manager != null) {
 			manager.tick();
 			g.setColor(Color.cyan);
 			g.setFont(new Font("Monospaced", Font.PLAIN, 20));
 			g.drawString("Fail Counter: " + manager.misses, 50, 100);
+			g.drawString("Score: " + manager.score, 350, 100);
 		}
 
 		for (Drawable d : drawables) {
 			d.draw(g);
 		}
+
+		// For debugging purposes
+//		if (frames % Settings.FPS * 2 == 0) {
+//			manager.printAllNotes();
+//		}
 
 		long currentTime = System.currentTimeMillis();
 		while (currentTime - frameStart < 1000 / Settings.FPS) {
@@ -71,6 +79,10 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 	 */
 	public void addDrawable(Drawable d) {
 		drawables.add(d);
+	}
+
+	public void removeDrawable(Drawable d) {
+		drawables.remove(d);
 	}
 
 	@Override

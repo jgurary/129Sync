@@ -1,13 +1,14 @@
 package RhythmGame;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class GameManager {
+public class GameManager implements NoteKeeper {
 
-	// TODO miss counter
-	// TODO hit detection for notes
+	// TODO Game gets harder over time
+	// TODO Penalize the player somehow for hitting keys when a note isn't capture
 	// TODO more precticable and rhythmic spawning
-	// TODO remove notes from the list when they leave the screen...
+	// TODO BUG hitzones don't move when the screen is resized
 
 	// FINALS
 	public static final int NUMBER_OF_HITZONES = 4;
@@ -24,7 +25,8 @@ public class GameManager {
 	int ticks = 0;
 
 	// GAMEPLAY LOGIC
-	int misses = 0;
+	int misses = 0, score = 0;
+	int currentDifficulty = Settings.TICKS_BETWEEN_NOTES_INITIAL;
 
 	public GameManager(Display display) {
 		this.display = display;
@@ -44,14 +46,64 @@ public class GameManager {
 	 */
 	public void tick() {
 		ticks++;
-		if (ticks % Settings.TICKS_BETWEEN_NOTES == 0) {
+
+		spawnNote();
+
+		moveNotes();
+
+		tickAnimations();
+
+		raiseDifficulty();
+
+		checkMisses();
+	}
+
+	/**
+	 * Periodically increase the difficulty, lowering {@link #currentDifficulty}
+	 * (the spawn time between notes) to a minimum of
+	 * {@link Settings#TICKS_BETWEEN_NOTES_MINIMUM}
+	 */
+	public void raiseDifficulty() {
+		if (ticks % Settings.TICKS_BETWEEN_DIFFICULTY_INCREASES == 0) {
+			if (currentDifficulty - Settings.DIFFICULTY_INCREASE_PER_ITERATION > Settings.TICKS_BETWEEN_NOTES_MINIMUM) {
+				currentDifficulty -= Settings.DIFFICULTY_INCREASE_PER_ITERATION;
+			} else {
+				currentDifficulty = Settings.TICKS_BETWEEN_NOTES_MINIMUM;
+			}
+		}
+	}
+
+	/**
+	 * Periodically spawns a new note. See
+	 * {@link Settings#TICKS_BETWEEN_NOTES_INITIAL} for the number of frames between
+	 * notes being spawned initially. <br>
+	 * <br>
+	 * Difficulty goes up over time, to a minimum spawn time of:
+	 * {@link Settings#TICKS_BETWEEN_NOTES_MINIMUM}
+	 */
+	public void spawnNote() {
+		if (ticks % currentDifficulty == 0) {
 			spawnNote((int) (Math.random() * NUMBER_OF_HITZONES));
 		}
-		moveNotes();
-		for (Note n : notes) {
-			n.tickAnimation();
+	}
+
+	/**
+	 * Advances all of the animations of objects in this game by one frame
+	 */
+	public void tickAnimations() {
+		// TODO BUG: Occasionally triggers concurrent exception when a Note removes
+		// itself!
+		try {
+			for (Note n : notes) {
+				n.tickAnimation();
+			}
+		} catch (Exception e) {
+			System.err.println("Concurrency issue...");
 		}
-		checkMisses();
+
+		for (HitZone h : hitZones) {
+			h.tickAnimation();
+		}
 	}
 
 	/**
@@ -65,7 +117,8 @@ public class GameManager {
 			if (hitZones[lane].contains(n.display)) {
 				if (!n.isHit()) {
 					n.hitNote();
-					// TODO do some stuff with the score and whatever....
+					hitZones[lane].startHitAnimation();
+					score++;
 				}
 			}
 		}
@@ -75,10 +128,15 @@ public class GameManager {
 	 * Checks if a shape has crossed the threshold to count as a miss
 	 */
 	public void checkMisses() {
-		for (Note n : notes) {
+		Iterator<Note> itr = notes.iterator();
+
+		while (itr.hasNext()) {
+			Note n = itr.next();
 			if (!n.isMiss()) {
 				if (n.display.y > display.getHeight()) {
 					n.miss();
+					display.removeDrawable(n);
+					itr.remove();
 					misses++;
 				}
 			}
@@ -94,7 +152,7 @@ public class GameManager {
 	 */
 	public void spawnNote(int lane) {
 		Note n = new Note(laneLocation[lane], -Settings.NOTE_SIZE,
-				Math.random() * Settings.NOTE_SPEED_RANGE + Settings.MIN_NOTE_SPEED);
+				Math.random() * Settings.NOTE_SPEED_RANGE + Settings.MIN_NOTE_SPEED, this);
 		notes.add(n);
 		display.addDrawable(n);
 	}
@@ -108,7 +166,7 @@ public class GameManager {
 	 * @param dropSpeed
 	 */
 	public void spawnNote(int lane, double dropSpeed) {
-		Note n = new Note(laneLocation[lane], -Settings.NOTE_SIZE, dropSpeed);
+		Note n = new Note(laneLocation[lane], -Settings.NOTE_SIZE, dropSpeed, this);
 		notes.add(n);
 		display.addDrawable(n);
 	}
@@ -120,6 +178,28 @@ public class GameManager {
 		for (Note n : notes) {
 			n.move(0, n.dropSpeed);
 		}
+	}
+
+	/**
+	 * Prints the color of all notes to the console
+	 */
+	public void printAllNotes() {
+		System.out.println("Notes");
+		for (Note n : notes) {
+			System.out.println(n.color);
+		}
+		System.out.println();
+	}
+
+	@Override
+	public void removeNote(Note n) {
+		notes.remove(n);
+		display.removeDrawable(n);
+	}
+
+	@Override
+	public ArrayList<Note> getNotes() {
+		return notes;
 	}
 
 }
