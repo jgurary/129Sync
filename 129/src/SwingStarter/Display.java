@@ -40,6 +40,7 @@ public class Display extends JPanel implements MouseInputListener, KeyListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		// DONT USE THIS ONE
 	}
 
 	@Override

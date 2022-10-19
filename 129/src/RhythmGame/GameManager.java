@@ -5,8 +5,7 @@ import java.util.Iterator;
 
 public class GameManager implements NoteKeeper {
 
-	// TODO Game gets harder over time
-	// TODO Penalize the player somehow for hitting keys when a note isn't capture
+	// TODO Penalize the player somehow for hitting keys when a note isn't captured
 	// TODO more precticable and rhythmic spawning
 	// TODO BUG hitzones don't move when the screen is resized
 
